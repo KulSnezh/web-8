@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Форма обратной связи в попапе (без backend)</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  button#openFormBtn {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  /* Попап */
+  #popupOverlay {
+    position: fixed;
+    top: 0; left: 0; right:0; bottom:0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  #popupOverlay.active {
+    display: flex;
+  }
+
+  /* Форма */
+  #feedbackForm {
+    background: #fff;
+    padding: 20px 25px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  #feedbackForm h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 24px;
+  }
+
+  #feedbackForm label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    margin-top: 12px;
+  }
+
+  #feedbackForm input[type="text"],
+  #feedbackForm input[type="email"],
+  #feedbackForm input[type="tel"],
+  #feedbackForm textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    resize: vertical;
+  }
+
+  #feedbackForm textarea {
+    min-height: 80px;
+  }
+
+  #feedbackForm .checkbox-container {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+  }
+
+  #feedbackForm .checkbox-container input[type="checkbox"] {
+    margin-right: 8px;
+  }
+
+  #feedbackForm button[type="submit"] {
+    margin-top: 20px;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+    background-color: #007bff;
+    color:#fff;
+    border:none;
+    border-radius:4px;
+    cursor:pointer;
+  }
+  #feedbackForm button[type="submit"]:disabled {
+    background-color: #999;
+    cursor:not-allowed;
+  }
+
+  /* Кнопка закрытия */
+  #popupCloseBtn {
+    position: absolute;
+    top:10px; right:10px;
+    background:none;
+    border:none;
+    font-size:24px;
+    cursor:pointer;
+    color:#999;
+  }
+  #popupCloseBtn:hover {
+    color:#333;
+  }
+
+  /* Сообщение */
+  #formMessage {
+    margin-top:15px;
+    font-size:14px;
+  }
+  #formMessage.success {
+    color: green;
+  }
+  #formMessage.error {
+    color:red;
+  }
+
+</style>
+</head>
+<body>
+
+<button id="openFormBtn">Обратная связь</button>
+
+<div id="popupOverlay" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+  <form id="feedbackForm" novalidate>
+    <button type="button" id="popupCloseBtn" aria-label="Закрыть форму">&times;</button>
+    <h2 id="formTitle">Обратная связь</h2>
+
+    <label for="fio">ФИО</label>
+    <input type="text" id="fio" name="fio" required autocomplete="name" />
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required autocomplete="email" />
+
+    <label for="phone">Телефон</label>
+    <input type="tel" id="phone" name="phone" required pattern="+?d[ds-()]{4,}" autocomplete="tel" placeholder="+7 (999) 123-45-67" />
+
+    <label for="organization">Организация</label>
+    <input type="text" id="organization" name="organization" autocomplete="organization" />
+
+    <label for="message">Сообщение</label>
+    <textarea id="message" name="message" required></textarea>
+
+    <div class="checkbox-container">
+      <input type="checkbox" id="consent" name="consent" required />
+      <label for="consent">Согласен(на) с политикой обработки персональных данных</label>
+    </div>
+
+    <button type="submit">Отправить</button>
+
+    <div id="formMessage" role="alert"></div>
+  </form>
+</div>
